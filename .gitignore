@@ -1,0 +1,12 @@
+/*
+/*/
+
+!.gitignore
+!/Assets/
+/Assets/*
+!/Assets/Scripts/
+/Assets/Scripts/*
+!/Assets/Scripts/*.cs
+!/Assets/Shaders/
+/Assets/Shaders/*
+!/Assets/Shaders/*.shader
