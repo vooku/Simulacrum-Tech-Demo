@@ -4,6 +4,8 @@ using MidiJack;
 
 public class VideoMixer : MonoBehaviour
 {
+    public ChokeLayer chLayer = new ChokeLayer();
+
     public VideoClip bgClip;
     public VideoClip[] clips;
     public int[] notes;
@@ -26,12 +28,13 @@ public class VideoMixer : MonoBehaviour
         players = new VideoPlayer[clips.Length];
         renderTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
         renderTexture.Create();
-        //material.SetTexture("_MainTex", renderTexture);
+        material.SetTexture("_Layer2", renderTexture);
+
 
         bgPlayer = new VideoPlayer();
         bgTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
         bgTexture.Create();
-        material.SetTexture("_VideoTex", bgTexture);
+        material.SetTexture("_Layer1", bgTexture);
 
         for (int i = 0; i < 1/*clips.Length*/; i++)
         {
@@ -75,6 +78,6 @@ public class VideoMixer : MonoBehaviour
 
     void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
-        Graphics.Blit(renderTexture, dest, material);
+        Graphics.Blit(null, dest, material);
     }
 }
