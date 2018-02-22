@@ -4,56 +4,14 @@ using MidiJack;
 
 public class VideoMixer : MonoBehaviour
 {
-    public ChokeLayer chLayer = new ChokeLayer();
-
-    public VideoClip bgClip;
-    public VideoClip[] clips;
-    public int[] notes;
     public Material material;
-    public Material emptyMaterial;
 
-    VideoPlayer[] players;
-    VideoPlayer bgPlayer;
-
-    RenderTexture renderTexture;
-    RenderTexture bgTexture;
+    ChokeLayer[] chokeLayers;
 
     void Start()
     {
-        if (notes.Length != clips.Length)
-        {
-            Debug.Log("Error: Clip and note counts mismatch.");
-        }
-
-        players = new VideoPlayer[clips.Length];
-        renderTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
-        renderTexture.Create();
-        material.SetTexture("_Layer2", renderTexture);
-
-
-        bgPlayer = new VideoPlayer();
-        bgTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
-        bgTexture.Create();
-        material.SetTexture("_Layer1", bgTexture);
-
-        for (int i = 0; i < 1/*clips.Length*/; i++)
-        {
-            players[i] = gameObject.AddComponent<UnityEngine.Video.VideoPlayer>();
-            players[i].playOnAwake = true;
-            players[i].isLooping = true;
-            players[i].renderMode = VideoRenderMode.RenderTexture;
-            players[i].targetTexture = renderTexture;
-            players[i].clip = clips[i];
-            players[i].Prepare();
-        }
-
-        bgPlayer = gameObject.AddComponent<UnityEngine.Video.VideoPlayer>();
-        bgPlayer.playOnAwake = true;
-        bgPlayer.isLooping = true;
-        bgPlayer.renderMode = VideoRenderMode.RenderTexture;
-        bgPlayer.targetTexture = bgTexture;
-        bgPlayer.clip = bgClip;
-        bgPlayer.Prepare();
+        chokeLayers = GetComponents<ChokeLayer>();
+        print(chokeLayers.Length);
     }
 
     void Update()
@@ -78,6 +36,9 @@ public class VideoMixer : MonoBehaviour
 
     void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
+        material.SetTexture("_Layer1", chokeLayers[0].GetActiveTexture());
+        material.SetTexture("_Layer2", chokeLayers[1].GetActiveTexture());
+
         Graphics.Blit(null, dest, material);
     }
 }
