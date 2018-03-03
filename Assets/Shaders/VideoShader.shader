@@ -58,14 +58,11 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				//fixed4 col = tex2D(_MainTex, i.uv);
-
                 return clamp(0, 1,
-                    tex2D(_Layer0, i.uv0) * (_Activity & 1)+
+                    tex2D(_Layer0, i.uv0) * (_Activity & 1) +
                     tex2D(_Layer1, i.uv1) * (_Activity & 2) +
                     tex2D(_Layer2, i.uv2) * (_Activity & 4) +
                     tex2D(_Layer3, i.uv3) * (_Activity & 8));
-                //return tex2D(_Layer2, i.uv1);
 			}
 			ENDCG
 		}

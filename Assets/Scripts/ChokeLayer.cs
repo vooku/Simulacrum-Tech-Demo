@@ -32,8 +32,8 @@ public class ChokeLayer : MonoBehaviour {
             players[i].playOnAwake = true;
             players[i].isLooping = true;
             players[i].renderMode = VideoRenderMode.RenderTexture;
-            players[i].targetTexture = textures[0];
-            players[i].clip = clips[0];
+            players[i].targetTexture = textures[i];
+            players[i].clip = clips[i];
             players[i].Prepare();
         }
     }
@@ -45,6 +45,8 @@ public class ChokeLayer : MonoBehaviour {
             if (MidiMaster.GetKeyUp(notes[i]))
             {
                 noteActive = false;
+                players[i].Pause();
+                players[i].targetCameraAlpha = 0;
             }
         }
 
@@ -54,29 +56,16 @@ public class ChokeLayer : MonoBehaviour {
             {
                 noteActive = true;
                 activeTexture = textures[i];
+                players[i].Play();
+                players[i].targetCameraAlpha = 1;
+                break;
             }
         }
-        
-        //for (int i = 0; i < clips.Length; i++)
-        //{
-        //    if (MidiMaster.GetKeyDown(notes[i]))
-        //    {
-        //        Debug.Log(Time.frameCount + " " + notes[i]);
-        //        players[i].Play();
-        //        players[i].targetCameraAlpha = 1;
-        //    }
-        //    else if (MidiMaster.GetKeyUp(notes[i]))
-        //    {
-        //        players[i].Pause();
-        //        players[i].targetCameraAlpha = 0;
-        //    }
-        //}
     }
 
     public RenderTexture GetActiveTexture(ref bool active)
     {
         active = noteActive;
-
-        return textures[0];
+        return activeTexture;
     }
 }
